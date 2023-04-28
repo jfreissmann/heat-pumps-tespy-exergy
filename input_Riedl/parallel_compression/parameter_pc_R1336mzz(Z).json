@@ -1,0 +1,89 @@
+{
+    "setup": {
+        "name": "parallel compression",
+        "type": "HeatPumpParallelComp",
+        "refrig": "R1336mzz(Z)"
+    },
+    "ambient": {
+        "p": 1.013,
+        "T": 15
+    },
+    "fluids": {
+        "wf": "REFPROP::R1336mzz(Z)",
+        "si": "H2O"
+    },
+    "gc": {
+        "pr1": 1,
+        "pr2": 1,
+        "ttd_l": 10,
+        "Q": -10000000.0
+    },
+    "ev": {
+        "pr1": 1,
+        "pr2": 1,
+        "ttd_l": 5
+    },
+    "cp_1": {
+        "eta_s": 0.76
+    },
+    "cp_2": {
+        "eta_s": 0.76
+    },
+    "ihx_1": {
+        "pr1": 1,
+        "pr2": 1,
+        "ttd_u": 15
+    },
+    "ihx_2": {
+        "pr1": 1,
+        "pr2": 1,
+        "ttd_u": 15
+    },
+    "c11": {
+        "p": 5,
+        "T": 95
+    },
+    "c12": {
+        "T": 90
+    },
+    "c21": {
+        "p": 20,
+        "T": 160
+    },
+    "c22": {
+        "T": 190
+    },
+    "c32": {
+        "p": 31,
+        "T_start": 165
+    },
+    "c34": {
+        "p": 8
+    },
+    "c37": {
+        "p": 5.5516
+    },
+    "c38": {
+        "p_start": 5.5516,
+        "T_start": 90.1,
+        "Td_bp": 0.1
+    },
+    "c39": {
+        "p_start": 5.5516,
+        "T_start": 150
+    },
+    "c42": {
+        "p_start": 8,
+        "T_start": 155
+    },
+    "logph": {
+        "x_min": 0,
+        "x_max": 1100,
+        "y_min": 0.1,
+        "y_max": 200.0
+    },
+    "sensitivity": {
+        "p_high_min": 43,
+        "p_high_max": 95
+    }
+}

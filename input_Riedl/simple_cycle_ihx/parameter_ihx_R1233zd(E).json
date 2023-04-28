@@ -1,0 +1,71 @@
+{
+    "setup": {
+        "name": "simple cycle ihx",
+        "type": "HeatPumpIHX",
+        "refrig": "R1233zd(E)"
+    },
+    "ambient": {
+        "p": 1.013,
+        "T": 15
+    },
+    "fluids": {
+        "wf": "REFPROP::R1233zd(E)",
+        "si": "H2O"
+    },
+    "gc": {
+        "pr1": 1,
+        "pr2": 1,
+        "ttd_l": 10,
+        "Q": -1000000.0
+    },
+    "ev": {
+        "pr1": 1,
+        "pr2": 1,
+        "ttd_l": 5
+    },
+    "cp": {
+        "eta_s": 0.76
+    },
+    "ihx": {
+        "pr1": 1,
+        "pr2": 1,
+        "ttd_u": 15
+    },
+    "c11": {
+        "p": 5,
+        "T": 95
+    },
+    "c12": {
+        "T": 90
+    },
+    "c21": {
+        "p": 20,
+        "T": 160
+    },
+    "c22": {
+        "T": 200
+    },
+    "c32": {
+        "p": 46,
+        "T_start": 165
+    },
+    "c35": {
+        "p_start": 8.334,
+        "T_start": 90.1,
+        "Td_bp": 0.1
+    },
+    "c36": {
+        "p": 8.334,
+        "T_start": 155
+    },
+    "logph": {
+        "x_min": 300,
+        "x_max": 700,
+        "y_min": 1,
+        "y_max": 200.0
+    },
+    "sensitivity": {
+        "p_high_min": 39,
+        "p_high_max": 55
+    }
+}
