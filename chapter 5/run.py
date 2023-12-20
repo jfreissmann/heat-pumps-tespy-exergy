@@ -8,96 +8,6 @@ from heatpumps.models.intercooling import HeatPumpIntercooling
 from heatpumps.models.parallel import HeatPumpParallelComp
 from heatpumps.models.simple import HeatPumpSimple
 
-plt.rcParams['xtick.direction'] = 'in'
-plt.rcParams['ytick.direction'] = 'in'
-plt.rcParams['font.size'] = 16
-
-# if os.path.exists('error_log_REFPROP.txt'):
-#     os.remove('error_log_REFPROP.txt')
-
-# for dir_path, subdirs, files in os.walk('input'):
-#     for file in files:
-#         # if 'R1336' in file:
-#         #     continue
-#         path = os.path.join(dir_path, file)
-#         with open(path, 'r') as file:
-#             params = json.load(file)
-
-#         with open(path, 'w') as file:
-#             json.dump(params, file, indent=4)
-
-#         if params['setup']['type'] == 'HeatPumpSimple':
-#             hp = HeatPumpSimple(params)
-#         elif params['setup']['type'] == 'HeatPumpIHX':
-#             hp = HeatPumpIHX(params)
-#         elif params['setup']['type'] == 'HeatPumpParallelComp':
-#             hp = HeatPumpParallelComp(params)
-#         elif params['setup']['type'] == 'HeatPumpIntercooling':
-#             hp = HeatPumpIntercooling(params)
-
-#         print('\n######################################')
-#         print(
-#             f'{hp.params["setup"]["type"]} '
-#             + f'{hp.params["setup"]["refrig"]}'
-#             )
-#         print('######################################\n')
-#         try:
-#             hp.run_model()
-#             with open('error_log_REFPROP.txt', 'a') as file:
-#                 file.write(
-#                     params['setup']['type'] + ' ' + params['setup']['refrig']
-#                     + ' worked.' + '\n'
-#                     )
-#         except Exception as error:
-#             with open('error_log_REFPROP.txt', 'a') as file:
-#                 file.write(
-#                     params['setup']['type'] + ' ' + params['setup']['refrig']
-#                     + ' ' + str(error) + '\n'
-#                     )
-
-#         # if 'R1233zd(E)'.upper() == params['setup']['refrig'].upper():
-#         #     if params['sensitivity']['p_high_min'] != 40:
-#         #         params['sensitivity']['p_high_min'] = 40
-#         #         with open(path, 'w') as file:
-#         #             json.dump(params, file, indent=4)
-
-#         hp.plot_p_high_analysis(
-#             params['sensitivity']['p_high_min'],
-#             params['sensitivity']['p_high_max'],
-#             stepwidth=2,
-#             savefig=True
-#             )
-# #         try:
-# #             diagram = hp.plot_logph({}, return_diagram=True)
-# #             diagram.ax.set_title(
-# #                 f"{params['setup']['type']} {params['setup']['refrig']}"
-# #                 )
-# #             filepath = (
-# #                 f'plots\\logph_{params["setup"]["type"]}_'
-# #                 + f'{params["setup"]["refrig"]}.pdf'
-# #                 )
-# #             diagram.save(filepath, dpi=300)
-# #         except (ValueError) as e:
-# #             print(
-# #                 params['setup']['type'] + ' ' + params['setup']['refrig']
-# #                 + ' ' + str(e) + '\n'
-# #                 )
-
-# # shplt.create_multipage_pdf('plots\\logph_all.pdf')
-
-#### DEBUG
-
-# with open('input\\simple_cycle\\parameter_R1233zd(E).json', 'r') as file:
-#     params = json.load(file)
-
-# hp = HeatPumpSimple(params)
-
-# hp.generate_components()
-# hp.generate_connections()
-# hp.init_simulation()
-# hp.design_simulation(print_results=True)
-# hp.plot_logph({}, savefig=True)
-
 
 def multiplot_p_high_analysis_hp(hptype, result='COP'):
     """Plot p_high analysis for different refrigerants of the same topology."""
@@ -113,7 +23,8 @@ def multiplot_p_high_analysis_hp(hptype, result='COP'):
         'darkgrey': '#A9A9A9'
     }
     fig, ax = plt.subplots(figsize=(14, 8))
-    for dir_path, subdirs, files in os.walk('input'):
+    inputpath = os.path.join(__file__, '..', 'input')
+    for dir_path, subdirs, files in os.walk(inputpath):
         for file, c in zip(files, colors.values()):
             path = os.path.join(dir_path, file)
             with open(path, 'r') as file:
@@ -189,7 +100,8 @@ def multiplot_p_high_analysis_refrig(refrig, result='COP'):
     }
     fig, ax = plt.subplots(figsize=(14, 8))
     color_count = 0
-    for dir_path, subdirs, files in os.walk('input'):
+    inputpath = os.path.join(__file__, '..', 'input')
+    for dir_path, subdirs, files in os.walk(inputpath):
         for file in files:
             path = os.path.join(dir_path, file)
             with open(path, 'r') as file:
@@ -251,7 +163,7 @@ def multiplot_p_high_analysis_refrig(refrig, result='COP'):
 
     return fig, ax
 
-def multiplot_p_high_analysis_refrig_combined(refrig):
+def multiplot_p_high_analysis_refrig_combined(refrig, use_REFPROP=True):
     """Plot p_high analysis for different topologies of the same refrigerant."""
     plt.rcParams['xtick.direction'] = 'in'
     plt.rcParams['ytick.direction'] = 'in'
@@ -259,18 +171,23 @@ def multiplot_p_high_analysis_refrig_combined(refrig):
     fig, ax1 = plt.subplots(figsize=(11, 9))
     ax2 = ax1.twinx()
     count = 0
-    for dir_path, subdirs, files in os.walk('input'):
+    # print(os.walk(os.path.join(__file__, '..', 'input')'input'))
+    inputpath = os.path.join(__file__, '..', 'input')
+    for dir_path, subdirs, files in os.walk(inputpath):
         for file in files:
             path = os.path.join(dir_path, file)
             with open(path, 'r') as file:
                 params = json.load(file)
 
-            params['ambient']['p'] = 1.013
-            with open(path, 'w') as file:
-                 json.dump(params, file, indent=4)
+            # params['ambient']['p'] = 1.013
+            # with open(path, 'w') as file:
+            #      json.dump(params, file, indent=4)
 
             if not refrig.upper() == params['setup']['refrig'].upper():
                 continue
+
+            if not use_REFPROP and ('REFPROP' in params['fluids']['wf']):
+                params['fluids']['wf'] = refrig
 
             if params['setup']['type'] == 'HeatPumpSimple':
                 hp = HeatPumpSimple(params)
@@ -290,11 +207,10 @@ def multiplot_p_high_analysis_refrig_combined(refrig):
 
             res.to_csv(
                 os.path.join(
-                    'raw_data',
+                    __file__, '..', 'raw_data',
                     f'multiplot_{params["setup"]["type"]}_{refrig}.csv'
                     ), sep=';'
                 )
-
 
             ax1.plot(
                 res['COP'], marker=markers[count], color='#00395B',
@@ -328,7 +244,7 @@ def multiplot_p_high_analysis_refrig_combined(refrig):
     return fig, ax1, ax2
 
 
-def multiplot_p_high_analysis_hp_combined(hptype):
+def multiplot_p_high_analysis_hp_combined(hptype, use_REFPROP=True):
     """Plot p_high analysis for different topologies of the same refrigerant."""
     plt.rcParams['xtick.direction'] = 'in'
     plt.rcParams['ytick.direction'] = 'in'
@@ -336,18 +252,22 @@ def multiplot_p_high_analysis_hp_combined(hptype):
     fig, ax1 = plt.subplots(figsize=(11, 9))
     ax2 = ax1.twinx()
     count = 0
-    for dir_path, subdirs, files in os.walk('input'):
+    inputpath = os.path.join(__file__, '..', 'input')
+    for dir_path, subdirs, files in os.walk(inputpath):
         for file in files:
             path = os.path.join(dir_path, file)
             with open(path, 'r') as file:
                 params = json.load(file)
 
-            params['ambient']['p'] = 1.013
-            with open(path, 'w') as file:
-                 json.dump(params, file, indent=4)
+            # params['ambient']['p'] = 1.013
+            # with open(path, 'w') as file:
+            #      json.dump(params, file, indent=4)
 
             if not hptype == params['setup']['type']:
                 continue
+
+            if not use_REFPROP and ('REFPROP' in params['fluids']['wf']):
+                params['fluids']['wf'] = refrig
 
             if params['setup']['type'] == 'HeatPumpSimple':
                 hp = HeatPumpSimple(params)
@@ -367,7 +287,7 @@ def multiplot_p_high_analysis_hp_combined(hptype):
 
             res.to_csv(
                 os.path.join(
-                    'raw_data',
+                    __file__, '..', 'raw_data',
                     f'multiplot_{hptype}_{params["setup"]["refrig"]}.csv'
                     ), sep=';'
                 )
@@ -405,35 +325,57 @@ def multiplot_p_high_analysis_hp_combined(hptype):
 
     return fig, ax1, ax2
 
-# hp_types = [
-#     'HeatPumpSimple', 'HeatPumpIHX', 'HeatPumpParallelComp',
-#     'HeatPumpIntercooling'
-#     ]
-hp_types = ['HeatPumpIHX']
 
-# refrigs = ['R600', 'R601', 'R1233zd(E)']
-refrigs = ['R600']
+if __name__ == '__main__':
+    # hp_types = [
+    #     'HeatPumpSimple', 'HeatPumpIHX', 'HeatPumpParallelComp',
+    #     'HeatPumpIntercooling'
+    #     ]
+    hp_types = ['HeatPumpIHX']
 
-# res_types = ['COP', 'epsilon']
+    # refrigs = ['R600', 'R601', 'R1233zd(E)']
+    refrigs = ['R600']
 
-# for hp_type in hp_types:
-#     for res_type in res_types:
-#         fig, ax = multiplot_p_high_analysis_hp(hp_type, result=res_type)
+    # res_types = ['COP', 'epsilon']
 
-#         plt.savefig(f'plots\\multiplot_{hp_type}_{res_type}.pdf')
+    # plotpath = os.path.join(__file__, '..', 'output', 'plots')
 
-# for refrig in refrigs:
-#     for res_type in res_types:
-#         fig, ax = multiplot_p_high_analysis_refrig(refrig, result=res_type)
+    # for hp_type in hp_types:
+    #     for res_type in res_types:
+    #         fig, ax = multiplot_p_high_analysis_hp(hp_type, result=res_type)
 
-#         plt.savefig(f'plots\\multiplot_{refrig}_{res_type}.pdf')
+    #         figpath = os.path.join(
+    #             plotpath, f'multiplot_{hp_type}_{res_type}.pdf'
+    #             )
+    #         plt.savefig(figpath)
 
-for refrig in refrigs:
-    fig, ax1, ax2 = multiplot_p_high_analysis_refrig_combined(refrig)
+    # for refrig in refrigs:
+    #     for res_type in res_types:
+    #         fig, ax = multiplot_p_high_analysis_refrig(
+    #             refrig, result=res_type
+    #             )
 
-    # plt.savefig(f'plots\\multiplot_{refrig}_combined.pdf')
+    #         figpath = os.path.join(
+    #             plotpath, f'multiplot_{refrig}_{res_type}.pdf'
+    #             )
+    #         plt.savefig(figpath)
 
-for hp_type in hp_types:
-    fig, ax1, ax2 = multiplot_p_high_analysis_hp_combined(hp_type)
+    # %% Create data for and example plot of Figure 6
+    for refrig in refrigs:
+        fig, ax1, ax2 = multiplot_p_high_analysis_refrig_combined(
+            refrig, use_REFPROP=True
+            )
 
-    # plt.savefig(f'plots\\multiplot_{hp_type}_combined.pdf')
+    #     figpath = os.path.join(plotpath, f'multiplot_{refrig}_combined.pdf')
+    #     plt.savefig(figpath)
+
+    # %% Create data for and example plot of Figure 5
+    for hp_type in hp_types:
+        fig, ax1, ax2 = multiplot_p_high_analysis_hp_combined(
+            hp_type, use_REFPROP=True
+            )
+
+    #     figpath = os.path.join(plotpath, f'\multiplot_{hp_type}_combined.pdf')
+    #     plt.savefig(figpath)
+
+    plt.show()
