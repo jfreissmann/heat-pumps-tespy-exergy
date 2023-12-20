@@ -3,8 +3,6 @@ import os
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
-import SWSHplotting as shplt
-
 from heatpumps.models.ihx import HeatPumpIHX
 from heatpumps.models.intercooling import HeatPumpIntercooling
 from heatpumps.models.parallel import HeatPumpParallelComp
