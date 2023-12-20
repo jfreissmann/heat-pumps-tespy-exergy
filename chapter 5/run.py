@@ -207,7 +207,7 @@ def multiplot_p_high_analysis_refrig_combined(refrig, use_REFPROP=True):
 
             res.to_csv(
                 os.path.join(
-                    __file__, '..', 'raw_data',
+                    __file__, '..', 'output', 'raw_data',
                     f'multiplot_{params["setup"]["type"]}_{refrig}.csv'
                     ), sep=';'
                 )
@@ -287,7 +287,7 @@ def multiplot_p_high_analysis_hp_combined(hptype, use_REFPROP=True):
 
             res.to_csv(
                 os.path.join(
-                    __file__, '..', 'raw_data',
+                    __file__, '..', 'output', 'raw_data',
                     f'multiplot_{hptype}_{params["setup"]["refrig"]}.csv'
                     ), sep=';'
                 )
