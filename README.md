@@ -8,7 +8,7 @@ The heat pumps are modelled using the free and open-source software [Thermal Eng
 
 # Contents
 
-The repository contains the simple heat pump model displayed in chapter 3 of the paper, as well as all four models compared in chapter 4. The former is a small and straightforward model and therefore is parametrized directly in the code. Since the models of the comparative analyses are more complex and employ four different refrigerants, each model has a corresponding input directory with an input file for each refrigerant. The same general structure is also used for the output of the models, with an additional folder for the raw result data.
+The repository contains the simple heat pump model displayed in chapter 4 of the paper, as well as all four models compared in chapter 5. The former is a small and straightforward model and therefore is parametrized directly in the code. Since the models of the comparative analyses are more complex and employ four different refrigerants, each model has a corresponding input directory with an input file for each refrigerant. The same general structure is also used for the output of the models, with an additional folder for the raw result data.
 
 # Reproduction
 
