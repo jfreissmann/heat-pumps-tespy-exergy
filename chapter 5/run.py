@@ -15,7 +15,7 @@ plt.rcParams['font.size'] = 16
 # if os.path.exists('error_log_REFPROP.txt'):
 #     os.remove('error_log_REFPROP.txt')
 
-# for dir_path, subdirs, files in os.walk('input_Riedl'):
+# for dir_path, subdirs, files in os.walk('input'):
 #     for file in files:
 #         # if 'R1336' in file:
 #         #     continue
@@ -113,7 +113,7 @@ def multiplot_p_high_analysis_hp(hptype, result='COP'):
         'darkgrey': '#A9A9A9'
     }
     fig, ax = plt.subplots(figsize=(14, 8))
-    for dir_path, subdirs, files in os.walk('input_Riedl'):
+    for dir_path, subdirs, files in os.walk('input'):
         for file, c in zip(files, colors.values()):
             path = os.path.join(dir_path, file)
             with open(path, 'r') as file:
@@ -189,7 +189,7 @@ def multiplot_p_high_analysis_refrig(refrig, result='COP'):
     }
     fig, ax = plt.subplots(figsize=(14, 8))
     color_count = 0
-    for dir_path, subdirs, files in os.walk('input_Riedl'):
+    for dir_path, subdirs, files in os.walk('input'):
         for file in files:
             path = os.path.join(dir_path, file)
             with open(path, 'r') as file:
@@ -259,7 +259,7 @@ def multiplot_p_high_analysis_refrig_combined(refrig):
     fig, ax1 = plt.subplots(figsize=(11, 9))
     ax2 = ax1.twinx()
     count = 0
-    for dir_path, subdirs, files in os.walk('input_Riedl'):
+    for dir_path, subdirs, files in os.walk('input'):
         for file in files:
             path = os.path.join(dir_path, file)
             with open(path, 'r') as file:
@@ -291,7 +291,7 @@ def multiplot_p_high_analysis_refrig_combined(refrig):
             res.to_csv(
                 os.path.join(
                     'raw_data',
-                    f'multiplot_{params["setup"]["type"]}_{refrig}_RIEDL.csv'
+                    f'multiplot_{params["setup"]["type"]}_{refrig}.csv'
                     ), sep=';'
                 )
 
@@ -336,7 +336,7 @@ def multiplot_p_high_analysis_hp_combined(hptype):
     fig, ax1 = plt.subplots(figsize=(11, 9))
     ax2 = ax1.twinx()
     count = 0
-    for dir_path, subdirs, files in os.walk('input_Riedl'):
+    for dir_path, subdirs, files in os.walk('input'):
         for file in files:
             path = os.path.join(dir_path, file)
             with open(path, 'r') as file:
@@ -368,7 +368,7 @@ def multiplot_p_high_analysis_hp_combined(hptype):
             res.to_csv(
                 os.path.join(
                     'raw_data',
-                    f'multiplot_{hptype}_{params["setup"]["refrig"]}_RIEDL.csv'
+                    f'multiplot_{hptype}_{params["setup"]["refrig"]}.csv'
                     ), sep=';'
                 )
 
@@ -420,20 +420,20 @@ refrigs = ['R600']
 #     for res_type in res_types:
 #         fig, ax = multiplot_p_high_analysis_hp(hp_type, result=res_type)
 
-#         plt.savefig(f'plots\\multiplot_{hp_type}_{res_type}_RIEDL.pdf')
+#         plt.savefig(f'plots\\multiplot_{hp_type}_{res_type}.pdf')
 
 # for refrig in refrigs:
 #     for res_type in res_types:
 #         fig, ax = multiplot_p_high_analysis_refrig(refrig, result=res_type)
 
-#         plt.savefig(f'plots\\multiplot_{refrig}_{res_type}_RIEDL.pdf')
+#         plt.savefig(f'plots\\multiplot_{refrig}_{res_type}.pdf')
 
 for refrig in refrigs:
     fig, ax1, ax2 = multiplot_p_high_analysis_refrig_combined(refrig)
 
-    # plt.savefig(f'plots\\multiplot_{refrig}_combined_RIEDL.pdf')
+    # plt.savefig(f'plots\\multiplot_{refrig}_combined.pdf')
 
 for hp_type in hp_types:
     fig, ax1, ax2 = multiplot_p_high_analysis_hp_combined(hp_type)
 
-    # plt.savefig(f'plots\\multiplot_{hp_type}_combined_RIEDL.pdf')
+    # plt.savefig(f'plots\\multiplot_{hp_type}_combined.pdf')
