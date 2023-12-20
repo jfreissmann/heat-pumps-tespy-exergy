@@ -124,7 +124,7 @@ fig = go.Figure(go.Sankey(
     layout=go.Layout({'width': 800})
     )
 # figpath = os.path.join(
-#     __file__, '..', 'plots', 'simpl_heat_pump_grassmann.pdf'
+#     __file__, '..', 'plots', 'simple_heat_pump_grassmann.pdf'
 #     )
 # fig.write_image(figpath)
 

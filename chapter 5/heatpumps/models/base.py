@@ -39,7 +39,8 @@ class HeatPumpBase:
         self.cop = np.nan
         self.epsilon = np.nan
 
-        self.stable_solution_path = (
+        self.stable_solution_path = os.path.join(
+            __file__, '..',
             f"{self.params['setup']['type']}_"
             + f"{self.params['setup']['refrig']}_init"
             )
