@@ -12,7 +12,7 @@ from .base import HeatPumpBase
 
 
 class HeatPumpIHX(HeatPumpBase):
-    """Heat pump with internal heat exchanger betwenn condensate and vapor."""
+    """Heat pump with internal heat exchanger between condensate and vapor."""
 
     def generate_components(self):
         """Initialize components of heat pump."""

@@ -1,7 +1,7 @@
-# miniconda prompt, activate your env, pip install plotly
+import os
+
 import plotly.graph_objects as go
-from CoolProp.CoolProp import PropsSI as CPSI
-# miniconda prompt, activate your env, pip install fluprodia
+from CoolProp.CoolProp import PropsSI as PSI
 from fluprodia import FluidPropertyDiagram
 from tespy.components import (Compressor, CycleCloser, HeatExchanger,
                               HeatExchangerSimple, Sink, Source, Valve)
@@ -18,7 +18,10 @@ fld_hf = {wf: 0, hf: 1, gh: 0}
 fld_gh = {wf: 0, hf: 0, gh: 1}
 
 # network
-heatpump = Network(fluids=[wf, hf, gh], T_unit='C', p_unit='bar', h_unit='kJ / kg', m_unit='kg / s')
+heatpump = Network(
+    fluids=[wf, hf, gh],
+    T_unit='C', p_unit='bar', h_unit='kJ / kg', m_unit='kg / s'
+    )
 
 # components
 cmp_th = Valve('throttle')
@@ -58,8 +61,8 @@ cmp_co.set_attr(pr1=1, pr2=1, Q=-20e3)
 # connections
 c03.set_attr(p=20, T=40, fluid=fld_wf)
 c04.set_attr(p=5)
-T_sup = CPSI("T", "Q", 1, "P", 5e5, wf) + 273.15 + 2
-h_sup = CPSI("H", "T", T_sup - 273.15, "P", 5*1e5, wf) / 1e3
+T_sup = PSI("T", "Q", 1, "P", 5e5, wf) + 273.15 + 2
+h_sup = PSI("H", "T", T_sup - 273.15, "P", 5*1e5, wf) / 1e3
 c01.set_attr(h=h_sup)
 
 c11.set_attr(p=1.013, T=15, fluid=fld_gh)
@@ -120,7 +123,10 @@ fig = go.Figure(go.Sankey(
     link=links),
     layout=go.Layout({'width': 800})
     )
-fig.write_image('01-simple-heat-pump\\plots\\simple-heat-pump-grassmann_new.pdf')
+# figpath = os.path.join(
+#     __file__, '..', 'plots', 'simple_heat_pump_grassmann.pdf'
+#     )
+# fig.write_image(figpath)
 
 # log p,h-diagram
 
@@ -134,7 +140,7 @@ diagram = FluidPropertyDiagram(wf)
 diagram.set_unit_system(T='°C', p='bar', h='kJ/kg')
 
 for key, data in result_dict.items():
-        result_dict[key]['datapoints'] = diagram.calc_individual_isoline(**data)
+    result_dict[key]['datapoints'] = diagram.calc_individual_isoline(**data)
 
 diagram.set_limits(x_min=200, x_max=500, y_min=1e0, y_max=1e2)
 diagram.calc_isolines()
@@ -142,12 +148,17 @@ diagram.draw_isolines('logph')
 
 for key in result_dict.keys():
     if key == 'throttle':
-          continue
+        continue
     datapoints = result_dict[key]['datapoints']
     diagram.ax.plot(datapoints['h'],datapoints['p'], color='#EC6707')
     diagram.ax.scatter(datapoints['h'][0],datapoints['p'][0], color='#B54036')
 
 diagram.ax.plot([c03.h.val, c04.h.val], [c03.p.val, c04.p.val], color='#EC6707')
-diagram.ax.scatter([c03.h.val, c04.h.val], [c03.p.val, c04.p.val], color='#B54036')
+diagram.ax.scatter(
+    [c03.h.val, c04.h.val], [c03.p.val, c04.p.val], color='#B54036'
+    )
 
-# diagram.save('01-simple-heat-pump\\plots\\simple-heat-pumplog-p-h_new.pdf', dpi=300)
+# figpath = os.path.join(
+#     __file__, '..', 'plots', 'simple_heat_pump_logp-h.pdf'
+#     )
+# diagram.save(figpath, dpi=300)

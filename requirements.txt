@@ -1,0 +1,5 @@
+tespy==0.6.3
+coolprop==6.6.0
+fluprodia==1.6
+plotly==5.18.0
+kaleido==0.2.1
