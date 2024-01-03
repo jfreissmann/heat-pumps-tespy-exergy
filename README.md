@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/633761164.svg)](https://zenodo.org/doi/10.5281/zenodo.10453873)
+
 # Introduction
 
 This package servers as a repository for the code used to generate the results of the paper "Exergy-based methods for heat pumps" by the authors. It aims to retain the models used and their respective input parametrization, as well as allow for the reproduction of the results by third parties.
